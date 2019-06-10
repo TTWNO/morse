@@ -1,4 +1,4 @@
 defualt: all
 
 all:
-	gcc -O2 main.c -o main.out
+	gcc -O2 morse.c -o morse
