@@ -22,3 +22,15 @@ It's quite a long passage in terms of what this program is meant to do, so if th
 
 If any letters/numbers/symbols are not from the range [A-Za-z0-9] it simply will be ignored.
 Only approved characters are dealt with.
+
+
+### Install:
+
+`make`
+`make install`
+
+Only installs in ~/.local/bin/
+If this directory does not exist, I don't know what happens.
+
+`make unisntall`
+will remove the morse file at ~/.local/bin/morse
