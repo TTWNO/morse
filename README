@@ -3,3 +3,22 @@
 ### Options:
 
 `--interactive` or `-i` will make you able to any phrase.
+
+`--verbose` or `-v` will add the letter bring printed before the morse code (e.g. (C)-.-.)
+
+You can pipe data in to be morse codeified
+
+### Limits:
+
+`65535` bytes of data is the maximum amount currently allowed in one go.
+This will *probably* change later, but I don't know how it works really.
+
+### Tests:
+
+`cat gettysburg.txt | ./morse` should let you know if something went wrong.
+It's quite a long passage in terms of what this program is meant to do, so if that woks, basically anything will.
+
+## Behvaiour:
+
+If any letters/numbers/symbols are not from the range [A-Za-z0-9] it simply will be ignored.
+Only approved characters are dealt with.
