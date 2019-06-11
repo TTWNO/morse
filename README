@@ -2,9 +2,9 @@
 
 ### Options:
 
-`--interactive` or `-i` will make you able to any phrase.
-
 `--verbose` or `-v` will add the letter bring printed before the morse code (e.g. (C)-.-.)
+
+`--slow` or `-s` will print each dash (-) and dot (.) with a delay inbetween them for effect. The dash delay is 3x that o the dot.
 
 You can pipe data in to be morse codeified
 

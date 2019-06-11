@@ -73,19 +73,7 @@ int main(int argc, char *argv[]){
 
 	for (int argi = 0; argi < argc; argi++){
 		char* arg = argv[argi];
-		if (strcmp(arg, "--interactive") == 0 || strcmp(arg, "-i") == 0){
-			printf("Entering interactive mode!\n");
-			int sizeOfInputString;
-			printf("Enter a string: ");
-			scanf("%[^\n]s", inputString);
-			sizeOfInputString = strlen(inputString);
-
-			printf("\"%s\" has length of %d\n", inputString, sizeOfInputString);
-			printf("\n");
-		  
-			print_morse(inputString, isSlow, addLetterBeforeMorse);
-			printf("\n");
-		} else if (strcmp(arg, "--slow") == 0 || strcmp(arg, "-s") == 0){
+		if (strcmp(arg, "--slow") == 0 || strcmp(arg, "-s") == 0){
 			isSlow = true;
 		} else if (strcmp(arg, "--verbose") == 0 || strcmp(arg, "-v") == 0){
 			addLetterBeforeMorse = true;
