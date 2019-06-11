@@ -12,7 +12,7 @@ You can pipe data in to be morse codeified
 
 ### Limits:
 
-Cannot currently convert from morse code back to letters.
+Cannot change the length of the delay for the morse code printing.
 
 ### Tests:
 
