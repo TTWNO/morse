@@ -17,42 +17,65 @@ static const char UPPERCASE_LETTERS[NUM_OF_LETTERS] = {'A', 'B', 'C', 'D', 'E', 
 // C is fun?
 static const char MORSE[NUM_OF_LETTERS][6] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", "-----"};
 
+char *multi_tok(char *input, char *delimiter) {
+    static char *string;
+    if (input != NULL)
+        string = input;
+
+    if (string == NULL)
+        return string;
+
+    char *end = strstr(string, delimiter);
+    if (end == NULL) {
+        char *temp = string;
+        string = NULL;
+        return temp;
+    }
+
+    char *temp = string;
+
+    *end = '\0';
+    string = end + strlen(delimiter);
+    return temp;
+}
+
 void print_single_morse(char charToMorse, bool isSlow, bool addLetter){
 	int sizeOfMorseCode;
+	bool isConvertable = false;
+	char convertedTo[6];	
 
 	// Loop through every character in the list of letters
 	for (int j = 0; j < NUM_OF_LETTERS; j++){
 		// If the character in the input string matches the character the character from the list
 		if (charToMorse == LOWERCASE_LETTERS[j] || charToMorse == UPPERCASE_LETTERS[j]){
+			strcpy(convertedTo, MORSE[j]);
 			sizeOfMorseCode = strlen(MORSE[j]);	
-			// Print chracter in ascii in brackets before the morse code
-			if (addLetter){
-				printf("(%c)", charToMorse, sizeOfMorseCode);
-			}
-			// if speed restraints are being added for effect
-			if (isSlow){
-				// Loop through each character in the morse code for that chracter
-				for (int k = 0; k < sizeOfMorseCode; k++){
-					printf("%c", MORSE[j][k]);
-					// Force flush buffer so it is garunteed to be written to, with the delays in between
-					fflush(stdout);
-					// If the morse character is a dash	
-					if (MORSE[j][k] == '-'){
-						// ******* TODO: Replace with Arduino light code
-						// Long delay code
-						usleep(DASH_PAUSE_LENGTH);
-					} else {
-						// ******* TODO: Replace with Arduino light code
-						// Short delay code
-						usleep(DOT_PAUSE_LENGTH);
-					}
-				}
-				printf(" ");
-			// If not slow
-			} else {
-				printf("%s ", MORSE[j]);
-			}
+			isConvertable = true;
 		}
+	}
+
+	if (addLetter){
+		printf("(%c)", charToMorse);
+	}
+	if (isConvertable){
+		if (isSlow){
+			// loop through all the characters in the morse string
+			for (int i = 0; i < strlen(convertedTo); i++){
+				printf("%c", convertedTo[i]);
+				if (convertedTo[i] == '-'){
+					// usleep is a microseconds
+					usleep(DASH_PAUSE_LENGTH);
+				} else if (convertedTo[i] == '.'){
+					usleep(DOT_PAUSE_LENGTH);
+				}
+			}
+		// if not slow
+		} else {
+			printf("%s ", convertedTo);
+		}
+	// if not convertable
+	} else {
+		printf("%c", charToMorse);
 	}
 }
 
@@ -66,16 +89,31 @@ void print_morse(char* strToMorse, bool isSlow, bool addLetter){
 	}
 }
 
-void print_unmorsed(char* morseToNormalize){
-
+void reverse_morse(char* morseToNormalize){
+	bool isConvertable = false;
+	char convertedChar;
+	
+	for (int i = 0; i < NUM_OF_LETTERS; i++){
+		if (strcmp(MORSE[i], morseToNormalize) == 0){
+			isConvertable = true;
+			convertedChar = UPPERCASE_LETTERS[i];
+		}
+	}
+	if (isConvertable){
+		printf("%c", convertedChar);
+	} else {
+		printf("%s", morseToNormalize);
+	}
 }
 
 int main(int argc, char *argv[]){
 
 	bool addLetterBeforeMorse = false;
 	bool isSlow = false;
+	bool convertFromMorse = false;	
 
-	char inputString[MAX_INPUT_SIZE];
+	size_t buflen = 0;
+	ssize_t lengthOfInputString;
 
 	for (int argi = 0; argi < argc; argi++){
 		char* arg = argv[argi];
@@ -83,17 +121,38 @@ int main(int argc, char *argv[]){
 			isSlow = true;
 		} else if (strcmp(arg, "--verbose") == 0 || strcmp(arg, "-v") == 0){
 			addLetterBeforeMorse = true;
+		} else if (strcmp(arg, "--reverse") == 0 || strcmp(arg, "-x") == 0){
+			convertFromMorse = true;
+}
+	}
+
+	if (convertFromMorse){
+		char* inputString;
+		char* wordToken;
+
+		char* letterToken;
+		bool lastTokenWasEmpty = false;
+		while ((getline(&inputString, &buflen, stdin))!=EOF){
+			wordToken = multi_tok(inputString, "  ");
+			while (wordToken){
+				letterToken = strtok(wordToken, " \n");
+				while (letterToken){
+					reverse_morse(letterToken);
+					letterToken = strtok(NULL, " \n");
+				}
+				wordToken = multi_tok(NULL, "  ");
+				printf(" ");
+			}
+			fflush(stdin);	
+		}	
+	} else {
+		char* inputString;
+		while ((getline(&inputString, &buflen, stdin))!=EOF){
+			print_morse(inputString, isSlow, addLetterBeforeMorse);
+			printf("\n");
+			fflush(stdin);
 		}
 	}
 
-	while (fgets(inputString, MAX_INPUT_SIZE, stdin)!=0){
-		print_morse(inputString, isSlow, addLetterBeforeMorse);
-		printf("\n");
-		fflush(stdout);
-		fflush(stdin);
-	}
-	printf("\n");
-
 	return 0;
 }
-
