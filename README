@@ -10,12 +10,11 @@ You can pipe data in to be morse codeified
 
 ### Limits:
 
-`65535` bytes of data is the maximum amount currently allowed in one go.
-This will *probably* change later, but I don't know how it works really.
+Cannot currently convert from morse code back to letters.
 
 ### Tests:
 
-`cat gettysburg.txt | ./morse` should let you know if something went wrong.
+`./morse < gettysburg.txt` should let you know if something went wrong.
 It's quite a long passage in terms of what this program is meant to do, so if that woks, basically anything will.
 
 ## Behvaiour:
