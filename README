@@ -6,6 +6,8 @@
 
 `--slow` or `-s` will print each dash (-) and dot (.) with a delay inbetween them for effect. The dash delay is 3x that o the dot.
 
+`--reverse` or `-x` will run this in reverse. Taking morse code and converting it to uppercase letters. (slow and verboce are not usable with this option).
+
 You can pipe data in to be morse codeified
 
 ### Limits:
