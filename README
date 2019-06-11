@@ -15,7 +15,7 @@ This will *probably* change later, but I don't know how it works really.
 
 ### Tests:
 
-`cat gettysburg.txt | ./morse` should let you know if something went wrong.
+`./morse < gettysburg.txt` should let you know if something went wrong.
 It's quite a long passage in terms of what this program is meant to do, so if that woks, basically anything will.
 
 ## Behvaiour:
