@@ -137,9 +137,17 @@ int main(int argc, char *argv[]){
 		} else if (strcmp(arg, "--reverse") == 0 || strcmp(arg, "-x") == 0){
 			convertFromMorse = true;
 		} else if (strcmp(arg, "--dash-delay") == 0 || strcmp(arg, "-hd") == 0){
-			dash_delay = strtol(argv[argi+1], NULL, 10);
+			if (argc > argi+1){
+				dash_delay = strtol(argv[argi+1], NULL, 10);
+			} else {
+				printf("No --dash-delay argument provided.\nIgnoring!\n");
+			}
 		} else if (strcmp(arg, "--dot-delay") == 0 || strcmp(arg, "-td") == 0){
-			dot_delay = strtol(argv[argi+1], NULL, 10);
+			if (argc > argi+1){
+				dot_delay = strtol(argv[argi+1], NULL, 10);
+			} else {
+				printf("Not --dot-delay argument provited.\nIgnoring!\n");
+			}
 		}
 	}
 
