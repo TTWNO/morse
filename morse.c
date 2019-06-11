@@ -75,7 +75,10 @@ void print_single_morse(char charToMorse, bool isSlow, bool addLetter){
 		}
 	// if not convertable
 	} else {
-		printf("%c", charToMorse);
+		if (charToMorse == '-' || charToMorse == '.'){
+		} else {
+			printf("%c", charToMorse);
+		}
 	}
 }
 
@@ -143,6 +146,7 @@ int main(int argc, char *argv[]){
 				wordToken = multi_tok(NULL, "  ");
 				printf(" ");
 			}
+			printf("\n");
 			fflush(stdin);	
 		}	
 	} else {
