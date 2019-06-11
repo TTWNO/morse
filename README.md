@@ -8,11 +8,14 @@
 
 `--reverse` or `-x` will run this in reverse. Taking morse code and converting it to uppercase letters. (slow and verboce are not usable with this option).
 
+`--dot-delay` or `-td` will let you set the delay for the morse code dots in microseconds (I think, I'm using usleep, whatever that uses). Reasonable balue is 150000, which is also the default. Use with -s option to enable slow printing.
+
+`--dash-delay` or `-hd` will let you set the delay for the morse code dashes in microseconds (again, I think). Reasonable value is 300000, which is also the default. use with -s option to enable slow printing
+
 You can pipe data in to be morse codeified
 
 ### Limits:
 
-Cannot change the length of the delay for the morse code printing.
 
 ### Tests:
 
