@@ -13,6 +13,8 @@
 static const char LOWERCASE_LETTERS[NUM_OF_LETTERS] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
 static const char UPPERCASE_LETTERS[NUM_OF_LETTERS] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'};
 
+// 6 spaces are needed to store the null terminator :)
+// C is fun?
 static const char MORSE[NUM_OF_LETTERS][6] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", "-----"};
 
 void print_single_morse(char charToMorse, bool isSlow, bool addLetter){
@@ -64,6 +66,10 @@ void print_morse(char* strToMorse, bool isSlow, bool addLetter){
 	}
 }
 
+void print_unmorsed(char* morseToNormalize){
+
+}
+
 int main(int argc, char *argv[]){
 
 	bool addLetterBeforeMorse = false;
@@ -79,8 +85,13 @@ int main(int argc, char *argv[]){
 			addLetterBeforeMorse = true;
 		}
 	}
-	scanf("%[^\n]s", inputString);
-	print_morse(inputString, isSlow, addLetterBeforeMorse);
+
+	while (fgets(inputString, MAX_INPUT_SIZE, stdin)!=0){
+		print_morse(inputString, isSlow, addLetterBeforeMorse);
+		printf("\n");
+		fflush(stdout);
+		fflush(stdin);
+	}
 	printf("\n");
 
 	return 0;
