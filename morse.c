@@ -42,7 +42,6 @@ const char* char_to_morse(char letter){
             result_set = true;
 		}
 	}
-    printf("result_ptr: %s\n", result_ptr);
     if (!result_set){
         result_ptr = "";
     }
@@ -55,14 +54,13 @@ char* string_to_morse(char* string){
     char result[string_len*8];
     char* result_ptr = result;
     // sets everything to null in the string, just in case there was data there previously.
-    //strcpy(result, "");
+    strcpy(result, "");
 	for (int i = 0; i < string_len; i++){
 		strcat(result, char_to_morse(string[i]));
         if (i != string_len-1){
             strcat(result, " ");
         }
 	}
-    printf("result_ptr (long): %s\n", result_ptr);
 	return result_ptr;
 }
 

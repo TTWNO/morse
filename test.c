@@ -12,8 +12,8 @@ const char* PASS = "PASS";
 const char* EQ = "==";
 const char* NEQ = "!=";
 
-const char* PASS_FORMAT = "[%s]: \"%s\" %s \"%s\"\n";
-const char* FAIL_FORMAT = "[%s]: \"%s\" %s \"%s\"\n";
+const char* PASS_FORMAT = "\e[32m[%s]: \"%s\" %s \"%s\"\e[0m\n";
+const char* FAIL_FORMAT = "\e[31m[%s]: \"%s\" %s \"%s\"\e[0m\n";
 
 void assert_str_eq(const char* s1, const char* s2){
     tests_run++;
@@ -111,8 +111,8 @@ void test_to_morse(){
 }
 
 void test_string_to_morse(){
-    assert_stm("Wee!", ".-- . . . -.-.--");
-    assert_stm("Hello", ".... . .-. .-. ---"); 
+    assert_stm("Wee!", ".-- . . -.-.--");
+    assert_stm("Hello", ".... . .-.. .-.. ---"); 
     assert_stm("world", ".-- --- .-. .-.. -.."); 
     assert_stm("Hello world!", ".... . .-.. .-.. --- / .-- --- .-. .-.. -.. -.-.--");
     assert_stm("I! HATE! YOU!", ".. -.-.-- / .... .- - . -.-.-- / -.-- --- ..- -.-.--");
