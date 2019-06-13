@@ -6,7 +6,7 @@
 #include <limits.h>
 #include <stdlib.h>
 
-#define NUM_OF_SYMBOLS 65
+#define NUM_OF_SYMBOLS 64
 
 static const char SYMBOLS[NUM_OF_SYMBOLS] = {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
@@ -22,7 +22,7 @@ static const char MORSE[NUM_OF_SYMBOLS][7] = {
     // a-z (same as above, but needed twice due to design choices)
     ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..",
     // 0-9
-    ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", "-----",
+     "-----", ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.",
     // space
     "/",
     // exclamation mark
@@ -60,6 +60,40 @@ char* string_to_morse(char* string){
         if (i != string_len-1){
             strcat(result, " ");
         }
+	}
+	return result_ptr;
+}
+
+const char morse_to_char(const char* morse){
+	for (int i = 0; i < NUM_OF_SYMBOLS; i++){
+		if (strcmp(morse, MORSE[i]) == 0){
+			return SYMBOLS[i];
+		}
+	}
+}
+
+char* morse_to_string(char* morse_to_cpy){
+	int morse_length = strlen(morse_to_cpy);
+	char morse[morse_length];
+	strcpy(morse, morse_to_cpy);
+
+	// TODO: make this dynamic
+	int max_size = 1024;
+	char result[max_size];
+	printf("%d\n", morse_length);
+	char* result_ptr = result;
+	// copy nothing to the string to avoid extra data
+	strcpy(result, "");
+
+	// split by the space character
+	char* morse_ptr = strtok(morse, " ");
+	// until we reach the end of the string
+	while (morse_ptr != NULL){
+		char char_to_add = morse_to_char(morse_ptr);
+		// give the address of the single character to concatinate to result
+		strcat(result, &char_to_add);
+		// reset the morse ptr for the next section between a space
+		morse_ptr = strtok(NULL, " ");
 	}
 	return result_ptr;
 }
