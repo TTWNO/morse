@@ -6,14 +6,27 @@
 #include <limits.h>
 #include <stdlib.h>
 
-#define NUM_OF_SYMBOLS 37
+#define NUM_OF_SYMBOLS 65
 
-static const char LOWERCASE_LETTERS[NUM_OF_SYMBOLS] = {'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '};
-static const char UPPERCASE_LETTERS[NUM_OF_SYMBOLS] = {'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', ' '};
+static const char SYMBOLS[NUM_OF_SYMBOLS] = {
+    'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
+    'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
+    '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
+    ' ', '!'};
 
-// 6 spaces are needed to store the null terminator :)
+// 7 spaces are needed to store the null terminator with the extended symbols :)
 // C is fun?
-static const char MORSE[NUM_OF_SYMBOLS][6] = {".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..", ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", "-----", "/"};
+static const char MORSE[NUM_OF_SYMBOLS][7] = {
+    // A-Z
+    ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..",
+    // a-z (same as above, but needed twice due to design choices)
+    ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..",
+    // 0-9
+    ".----", "..---", "...--", "....-", ".....", "-....", "--...", "---..", "----.", "-----",
+    // space
+    "/",
+    // exclamation mark
+    "-.-.--"};
 
 // This function returns a pointer to the morse code written above.
 // The genuis of this function feels amazing because I've never used C before, but I see why
@@ -22,27 +35,34 @@ static const char MORSE[NUM_OF_SYMBOLS][6] = {".-", "-...", "-.-.", "-..", ".", 
 // I do not copy ANY data. The pointer returned points to the above array!
 const char* char_to_morse(char letter){
     const char* result_ptr;
+    bool result_set = false;
 	for (int i = 0; i < NUM_OF_SYMBOLS; i++){
-		if (letter == UPPERCASE_LETTERS[i] || letter == LOWERCASE_LETTERS[i]){
+		if (letter == SYMBOLS[i]){
             result_ptr = MORSE[i];
+            result_set = true;
 		}
 	}
+    printf("result_ptr: %s\n", result_ptr);
+    if (!result_set){
+        result_ptr = "";
+    }
 	return result_ptr;
 }
 
 char* string_to_morse(char* string){
 	int string_len = strlen(string);
 	// worse possible case is 8 times the length (assuming all numbers/punctuation, and adding spaces)
-	char result[string_len*8];
+    char result[string_len*8];
     char* result_ptr = result;
     // sets everything to null in the string, just in case there was data there previously.
-    strcpy(result, "");
+    //strcpy(result, "");
 	for (int i = 0; i < string_len; i++){
 		strcat(result, char_to_morse(string[i]));
         if (i != string_len-1){
             strcat(result, " ");
         }
 	}
+    printf("result_ptr (long): %s\n", result_ptr);
 	return result_ptr;
 }
 
@@ -76,7 +96,7 @@ void print_single_morse(char charToMorse, bool isSlow, bool addLetter, long dotD
 	// Loop through every character in the list of letters
 	for (int j = 0; j < NUM_OF_SYMBOLS; j++){
 		// If the character in the input string matches the character the character from the list
-		if (charToMorse == LOWERCASE_LETTERS[j] || charToMorse == UPPERCASE_LETTERS[j]){
+		if (charToMorse == SYMBOLS[j]){
 			strcpy(convertedTo, MORSE[j]);
 			sizeOfMorseCode = strlen(MORSE[j]);	
 			isConvertable = true;
@@ -134,7 +154,7 @@ void reverse_morse(char* morseToNormalize){
 		// if the morse code is euqal to the input string
 		if (strcmp(MORSE[i], morseToNormalize) == 0){
 			isConvertable = true;
-			convertedChar = UPPERCASE_LETTERS[i];
+			convertedChar = SYMBOLS[i];
 		}
 	}
 	if (isConvertable){

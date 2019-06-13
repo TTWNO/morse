@@ -45,7 +45,7 @@ void assert_ctm(char input, char* output){
 void assert_stm(char* input, char* output){
     char result[strlen(input)*8];
     // fill with blanks in case of previous data
-    strcpy(result, "");
+//    strcpy(result, "");
     strcpy(result, string_to_morse(input));
     assert_str_eq(result, output);
 }
@@ -111,10 +111,11 @@ void test_to_morse(){
 }
 
 void test_string_to_morse(){
-    assert_stm("Hello", ".... . .-. .-. .."); 
+    assert_stm("Wee!", ".-- . . . -.-.--");
+    assert_stm("Hello", ".... . .-. .-. ---"); 
     assert_stm("world", ".-- --- .-. .-.. -.."); 
-    assert_stm("Hello world!", ".... . .-. .-. .--- / .-- --- .-. .-.. -.. / -.-.--");
-    assert_stm("I! HATE! YOU!", ".. -.-.-- / .... .- - . -.-.-- / -.-- -- ..- -.-.--");
+    assert_stm("Hello world!", ".... . .-.. .-.. --- / .-- --- .-. .-.. -.. -.-.--");
+    assert_stm("I! HATE! YOU!", ".. -.-.-- / .... .- - . -.-.-- / -.-- --- ..- -.-.--");
 }
 
 void all_tests(){
