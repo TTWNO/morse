@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <string.h>
+#include <stdlib.h>
 #include "morse.h"
 
 int tests_run = 0;
@@ -21,15 +22,18 @@ const char* FAIL_FORMAT = "\e[31m[%s]: \"%s\" %s \"%s\"\e[0m\n";
 const char* PASS_CHAR_FORMAT = "\e[32m[%s]: \'%c\' %s \'%c\'\e[0m\n";
 const char* FAIL_CHAR_FORMAT = "\e[31m[%s]: \'%c\' %s \'%c\'\e[0m\n";
 
+const char* FUNCTION_CALL_CFORMAT = "%s(\'%c\'):\n";
+const char* FUNCTION_CALL_SFORMAT = "%s(\"%s\"):\n";
+
 void assert_char_eq(const char c1, const char c2){
-	tests_run++;
-	if (c1 == c2){
-		printf(PASS_CHAR_FORMAT, PASS, c1, EQ, c2);
-		tests_passed++;
-	} else {
-		printf(FAIL_CHAR_FORMAT, FAIL, c1, NEQ, c2);
-		tests_failed++;
-	}
+    tests_run++;
+    if (c1 == c2){
+        printf(PASS_CHAR_FORMAT, PASS, c1, EQ, c2);
+        tests_passed++;
+    } else {
+        printf(FAIL_CHAR_FORMAT, FAIL, c1, NEQ, c2);
+        tests_failed++;
+    }
 }
 
 void assert_str_eq(const char* s1, const char* s2){
@@ -56,24 +60,28 @@ void assert_str_neq(const char* s1, const char* s2){
 
 void assert_ctm(char input, char* output){
     const char* result = char_to_morse(input);
+    printf(FUNCTION_CALL_CFORMAT, "char_to_morse", input);
     assert_str_eq(result, output);
 }
 
 void assert_stm(char* input, char* output){
-    char result[strlen(input)*8];
+    char* result = malloc(sizeof(char)*strlen(input)*8);
     // fill with blanks in case of previous data
 //    strcpy(result, "");
-    strcpy(result, string_to_morse(input));
+    result = string_to_morse(input);
+    printf(FUNCTION_CALL_SFORMAT, "string_to_morse", input);
     assert_str_eq(result, output);
 }
 
 void assert_mtc(char* input, char output){
 	char result = morse_to_char(input);
+    printf(FUNCTION_CALL_SFORMAT, "morse_to_char", input);
 	assert_char_eq(result, output);
 }
 
 void assert_mts(char* input, char* output){
-	char* result = morse_to_string(input);
+    char* result = morse_to_string(input);
+    printf(FUNCTION_CALL_SFORMAT, "morse_to_string", input);
 	assert_str_eq(result, output);
 }
 

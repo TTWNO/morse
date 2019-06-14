@@ -51,8 +51,8 @@ const char* char_to_morse(char letter){
 char* string_to_morse(char* string){
 	int string_len = strlen(string);
 	// worse possible case is 8 times the length (assuming all numbers/punctuation, and adding spaces)
-    char result[string_len*8];
-    char* result_ptr = result;
+    // +1 for NULL terminator
+    char* result = malloc(sizeof(char)*string_len*8);
     // sets everything to null in the string, just in case there was data there previously.
     strcpy(result, "");
 	for (int i = 0; i < string_len; i++){
@@ -61,7 +61,7 @@ char* string_to_morse(char* string){
             strcat(result, " ");
         }
 	}
-	return result_ptr;
+	return result;
 }
 
 const char morse_to_char(const char* morse){
@@ -72,18 +72,16 @@ const char morse_to_char(const char* morse){
 	}
 }
 
-char* morse_to_string(char* morse_to_cpy){
+char* morse_to_string(const char* morse_to_cpy){
 	int morse_length = strlen(morse_to_cpy);
 	char morse[morse_length];
 	strcpy(morse, morse_to_cpy);
 
-	// TODO: make this dynamic
-	int max_size = 1024;
-	char result[max_size];
-	printf("%d\n", morse_length);
-	char* result_ptr = result;
+    // allocate the amount of space the morse takes up for the text string
+    // this could be changed, but I don't see the point in optimizing the small things here.
+    char* result = malloc(sizeof(char)*strlen(morse));
 	// copy nothing to the string to avoid extra data
-	strcpy(result, "");
+	//strcpy(result, "");
 
 	// split by the space character
 	char* morse_ptr = strtok(morse, " ");
@@ -95,7 +93,7 @@ char* morse_to_string(char* morse_to_cpy){
 		// reset the morse ptr for the next section between a space
 		morse_ptr = strtok(NULL, " ");
 	}
-	return result_ptr;
+	return result;
 }
 
 char *multi_tok(char *input, char *delimiter) {
