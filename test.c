@@ -204,6 +204,7 @@ void test_morse_to_string(){
 	assert_mts("- .- .-.. -.-", "TALK");
 	assert_mts("- .- ... -.- / -- .- ... - . .-.", "TASK MASTER");
 	assert_mts("- .- .-. ..-. / -- .- .-.. .- -.- --- ...-", "TARF MALAKOV");
+    assert_mts("- .- ..-", "TAU");
 }
 
 void all_tests(){
