@@ -65,7 +65,8 @@ void assert_ctm(char input, char* output){
 }
 
 void assert_stm(char* input, char* output){
-    char* result = malloc(sizeof(char)*strlen(input)*8);
+    char* result;
+    //char* result = malloc(sizeof(char)*strlen(input)*8);
     // fill with blanks in case of previous data
 //    strcpy(result, "");
     result = string_to_morse(input);
