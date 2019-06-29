@@ -1,13 +1,15 @@
+CC?=gcc
+
 defualt: build
 
 morse.o:
-	gcc -O2 morse.c -c -o morse.o
+	$(CC) -O2 morse.c -c -o morse.o
 
 build: morse.o
-	gcc -O2 morse.o main.c -o morse
+	$(CC) -O2 morse.o main.c -o morse
 
 tests: morse.o
-	gcc -O2 test.c morse.o -o test
+	$(CC) -O2 test.c morse.o -o test
 
 install:
 	cp morse ~/.local/bin/
