@@ -16,6 +16,7 @@ const char* NEQ = "!=";
 const char* GREEN_TEXT = "\e[32m";
 const char* RED_TEXT = "\e[31m";
 const char* CLEAR_FORMAT = "\e[0m";
+const char* BOLD_TEXT = "\e[1m";
 
 const char* PASS_FORMAT = "\e[32m[%s]: \"%s\" %s \"%s\"\e[0m\n";
 const char* FAIL_FORMAT = "\e[31m[%s]: \"%s\" %s \"%s\"\e[0m\n";
@@ -228,20 +229,27 @@ int main(int argc, char **argv) {
 	if (tests_run == tests_passed){
 		printf("ALL TESTS PASSED\n");
 	}
-	printf(GREEN_TEXT);
-	for (int i = 0; i < tests_passed; i++){
-		printf("=");
-	}
-	printf(CLEAR_FORMAT);
 	printf(RED_TEXT);
 	for (int i = 0; i < tests_failed; i++){
 		printf("=");
 	}
+	printf(CLEAR_FORMAT);
+	printf(GREEN_TEXT);
+	for (int i = 0; i < tests_passed; i++){
+		printf("=");
+	}
 	printf("\n");
 	printf(CLEAR_FORMAT);
-	printf("Tests run: %d\n", tests_run);
-	printf("Tests passed: %d\n", tests_passed);
-	printf("Tests failed: %d\n", tests_failed);
+	printf("Tests run: %d", tests_run);
+	printf(" | ");
+	printf(BOLD_TEXT);
+	printf(GREEN_TEXT);
+	printf("%d passed", tests_passed);
+	printf(CLEAR_FORMAT);
+	printf(" | ");
+	printf(BOLD_TEXT);
+	printf(RED_TEXT);
+	printf("%d failed \n", tests_failed);
 	return 0;
 }
 
