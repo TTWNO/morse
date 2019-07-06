@@ -40,16 +40,16 @@ static const char* MORSE_ERROR = "........";
 const char* char_to_morse(char letter){
     const char* result_ptr = malloc(sizeof(char)*MAX_MORSE_LENGTH);
     bool result_set = false;
-	for (int i = 0; i < NUM_OF_SYMBOLS; i++){
-		if (letter == SYMBOLS[i]){
-            result_ptr = MORSE[i];
-            result_set = true;
+    for (int i = 0; i < NUM_OF_SYMBOLS; i++){
+       	if (letter == SYMBOLS[i]){
+	  result_ptr = MORSE[i];
+          result_set = true;
 		}
-	}
+    }
     if (!result_set){
         result_ptr = MORSE_ERROR;
     }
-	return result_ptr;
+    return result_ptr;
 }
 
 char* string_to_morse(char* string){
