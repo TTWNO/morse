@@ -1,15 +1,16 @@
 CC?=gcc
+OPTS?=-O2 -Wall -Werror
 
 defualt: build
 
 morse.o:
-	$(CC) -O2 morse.c -c -o morse.o
+	$(CC) $(OPTS) morse.c -c -o morse.o
 
 build: morse.o
-	$(CC) -O2 morse.o main.c -o morse
+	$(CC) $(OPTS) morse.o main.c -o morse
 
 tests: morse.o
-	$(CC) -O2 test.c morse.o -o test
+	$(CC) $(OPTS) test.c morse.o -o test
 
 install:
 	cp morse ~/.local/bin/
