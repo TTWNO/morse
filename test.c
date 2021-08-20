@@ -223,7 +223,7 @@ void all_tests(){
 }
 
 int main(int argc, char **argv) {
-	bool done_printing_passed_tests = false;
+	//bool done_printing_passed_tests = false;
 
 	all_tests();
 	if (tests_run == tests_passed){
@@ -250,6 +250,7 @@ int main(int argc, char **argv) {
 	printf(BOLD_TEXT);
 	printf(RED_TEXT);
 	printf("%d failed \n", tests_failed);
+  printf(CLEAR_FORMAT);
 	return 0;
 }
 

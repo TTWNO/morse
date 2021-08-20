@@ -9,7 +9,7 @@ morse.o:
 build: morse.o
 	$(CC) $(OPTS) morse.o main.c -o morse
 
-tests: morse.o
+test: morse.o
 	$(CC) $(OPTS) test.c morse.o -o test
 
 install:
