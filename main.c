@@ -16,19 +16,15 @@ int main(int argc, char *argv[]){
 	long dash_delay = DEFAULT_DASH_PAUSE;
 	long dot_delay = DEFAULT_DOT_PAUSE;
 
-	bool addLetterBeforeMorse = false;
 	bool isSlow = false;
 	bool convertFromMorse = false;	
 
 	size_t buflen = 0;
-	ssize_t lengthOfInputString;
 
 	for (int argi = 0; argi < argc; argi++){
 		char* arg = argv[argi];
 		if (strcmp(arg, "--slow") == 0 || strcmp(arg, "-s") == 0){
 			isSlow = true;
-		} else if (strcmp(arg, "--verbose") == 0 || strcmp(arg, "-v") == 0){
-			addLetterBeforeMorse = true;
 		} else if (strcmp(arg, "--reverse") == 0 || strcmp(arg, "-x") == 0){
 			convertFromMorse = true;
 		} else if (strcmp(arg, "--dash-delay") == 0 || strcmp(arg, "-hd") == 0){

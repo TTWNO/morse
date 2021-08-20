@@ -84,7 +84,7 @@ const char morse_to_char(const char* morse){
 }
 
 char* morse_to_string(const char* morse_to_cpy){
-	int morse_length = strlen(morse_to_cpy);
+	int morse_length = strlen(morse_to_cpy)+1;
 	char morse[morse_length];
 	strcpy(morse, morse_to_cpy);
 
