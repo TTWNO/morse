@@ -10,16 +10,16 @@
 #define NUM_OF_SYMBOLS 82
 #define MAX_MORSE_LENGTH 9
 
-static const char SYMBOLS[NUM_OF_SYMBOLS] = {
+static char SYMBOLS[NUM_OF_SYMBOLS] = {
     'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z',
     'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 'v', 'w', 'x', 'y', 'z',
     '0', '1', '2', '3', '4', '5', '6', '7', '8', '9',
     '.', ',', '?', '\'', '!', '/', '(', ')', '&', ':', ';', '=', '+', '-', '_', '"', '$', '@',
     ' '};
 
-static const char SYMBOL_ERROR = '~';
+static char SYMBOL_ERROR = '~';
 
-static const char MORSE[NUM_OF_SYMBOLS][MAX_MORSE_LENGTH] = {
+static char MORSE[NUM_OF_SYMBOLS][MAX_MORSE_LENGTH] = {
     // A-Z
     ".-", "-...", "-.-.", "-..", ".", "..-.", "--.", "....", "..", ".---", "-.-", ".-..", "--", "-.", "---", ".--.", "--.-", ".-.", "...", "-", "..-", "...-", ".--", "-..-", "-.--", "--..",
     // a-z (same as above, but needed twice due to design choices)
@@ -31,14 +31,14 @@ static const char MORSE[NUM_OF_SYMBOLS][MAX_MORSE_LENGTH] = {
     // space
     "/"};
 
-static const char* MORSE_ERROR = "........";
+static char* MORSE_ERROR = "........";
 
 // This function returns a pointer to the morse code written above.
 // The genuis of this function feels amazing because I've never used C before, but I see why
 // ... it's used for performence!
 //
 // I do not copy ANY data. The pointer returned points to the above array!
-const char* char_to_morse(char letter) {
+char* char_to_morse(char letter) {
     for (int i = 0; i < NUM_OF_SYMBOLS; i++) {
        	if (letter == SYMBOLS[i]) {
           return MORSE[i];
@@ -48,18 +48,25 @@ const char* char_to_morse(char letter) {
 }
 
 void string_to_morse(char* string, char* result){
+  int on_char = 0;
   int string_len = strlen(string);
+  char* morse;
 	// worse possible case is 8 times the length (assuming all numbers/punctuation, and adding spaces)
   // +1 for NULL terminator
 	for (int i = 0; i < string_len; i++){
-		strcat(result, char_to_morse(string[i]));
-        if (i != string_len-1){
-            strcat(result, " ");
-        }
+    morse = char_to_morse(string[i]);
+    int morse_len = strlen(morse);
+    memcpy(result+on_char, morse, morse_len);
+    on_char += morse_len;
+    if (i != string_len-1){
+      memcpy(result+on_char, " ", 1);
+      on_char++;
+    }
 	}
+  result[on_char] = '\0';
 }
 
-const char morse_to_char(const char* morse) {
+char morse_to_char(const char* morse) {
 	for (int i = 0; i < NUM_OF_SYMBOLS; i++) {
 		if (strcmp(morse, MORSE[i]) == 0) {
       return SYMBOLS[i];
@@ -69,8 +76,8 @@ const char morse_to_char(const char* morse) {
 }
 
 void morse_to_string(const char* morse_to_cpy, char* result) {
-	int morse_length = strlen(morse_to_cpy)+1;
-	char morse[morse_length];
+  int on_char = 0;
+	char* morse = malloc(sizeof(char) * strlen(morse_to_cpy)+1);
 	strcpy(morse, morse_to_cpy);
 
 	// split by the space character
@@ -79,8 +86,11 @@ void morse_to_string(const char* morse_to_cpy, char* result) {
 	while (morse_ptr != NULL) {
 		char char_to_add = morse_to_char(morse_ptr);
 		// give the address of the single character to concatinate to result
-		strcat(result, &char_to_add);
+    result[on_char++] = char_to_add;
 		// reset the morse ptr for the next section between a space
 		morse_ptr = strtok(NULL, " \n");
 	}
+  free(morse);
+  // add null terminator, necessary in C strings
+  result[on_char] = '\0';
 }
