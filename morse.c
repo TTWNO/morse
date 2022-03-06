@@ -1,3 +1,4 @@
+// add test to check mirroring
 #include "morse.h"
 #include <stdio.h>
 #include <string.h>
