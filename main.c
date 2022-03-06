@@ -20,17 +20,17 @@ int main(int argc, char *argv[]){
 	long dash_delay = DEFAULT_DASH_PAUSE;
 	long dot_delay = DEFAULT_DOT_PAUSE;
 
-	bool isSlow = false;
-	bool convertFromMorse = false;	
+	bool is_slow = false;
+	bool convert_from_morse = false;	
 
 	size_t buflen = 0;
 
 	for (int argi = 0; argi < argc; argi++){
 		char* arg = argv[argi];
 		if (strcmp(arg, "--slow") == 0 || strcmp(arg, "-s") == 0){
-			isSlow = true;
+			is_slow = true;
 		} else if (strcmp(arg, "--reverse") == 0 || strcmp(arg, "-x") == 0){
-			convertFromMorse = true;
+			convert_from_morse = true;
 		} else if (strcmp(arg, "--dash-delay") == 0 || strcmp(arg, "-hd") == 0){
 			if (argc > argi+1){
 				dash_delay = strtol(argv[argi+1], NULL, 10);
@@ -46,7 +46,7 @@ int main(int argc, char *argv[]){
 		}
 	}
 
-	if (convertFromMorse){
+	if (convert_from_morse){
 		// for every line in the input, until the end of file
 		while ((getline(&input_string, &buflen, stdin))!=EOF){
             int stringLen = strlen(input_string);
@@ -73,7 +73,7 @@ int main(int argc, char *argv[]){
 
             string_to_morse(input_string, output_string);
 
-            if (isSlow){
+            if (is_slow){
                 for (int i = 0; i < strlen(output_string); i++){
                     output_char = output_string[i];
                     if (output_char == '-'){

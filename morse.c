@@ -38,23 +38,27 @@ static char* MORSE_ERROR = "........";
 // ... it's used for performence!
 //
 // I do not copy ANY data. The pointer returned points to the above array!
-char* char_to_morse(char letter) {
+void char_to_morse(char letter, char* result) {
+    bool found = false;
     for (int i = 0; i < NUM_OF_SYMBOLS; i++) {
        	if (letter == SYMBOLS[i]) {
-          return MORSE[i];
+          strcpy(result, MORSE[i]);
+          found = true;
         }
     }
-    return MORSE_ERROR;
+    if (!found) {
+      strcpy(result, MORSE_ERROR);
+    }
 }
 
 void string_to_morse(char* string, char* result){
   int on_char = 0;
   int string_len = strlen(string);
-  char* morse;
+  char morse[MAX_MORSE_LENGTH] = "";
 	// worse possible case is 8 times the length (assuming all numbers/punctuation, and adding spaces)
   // +1 for NULL terminator
 	for (int i = 0; i < string_len; i++){
-    morse = char_to_morse(string[i]);
+    char_to_morse(string[i], morse);
     int morse_len = strlen(morse);
     memcpy(result+on_char, morse, morse_len);
     on_char += morse_len;

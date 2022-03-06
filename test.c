@@ -60,7 +60,8 @@ void assert_str_neq(const char* s1, const char* s2){
 }
 
 void assert_ctm(char input, char* output){
-    const char* result = char_to_morse(input);
+    char result[8];
+    char_to_morse(input, result);
     printf(FUNCTION_CALL_CFORMAT, "char_to_morse", input);
     assert_str_eq(result, output);
 }
