@@ -6,7 +6,13 @@ defualt: build
 morse.o:
 	$(CC) $(OPTS) morse.c -c -o morse.o
 
+morse-debug.o:
+	$(CC) $(OPTS) -ggdb morse.c -c -o morse.o
+
 build: morse.o
+	$(CC) $(OPTS) morse.o main.c -o morse
+
+debug: morse-debug.o
 	$(CC) $(OPTS) morse.o main.c -o morse
 
 test: morse.o
