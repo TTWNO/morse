@@ -210,12 +210,12 @@ void test_morse_to_string(){
 }
 
 void all_tests(){
-    test_tests();
+  test_tests();
 	printf("test_tests tests complete!\n");
-    test_to_morse();
+  test_to_morse();
 	printf("char_to_morse tests complete!\n");
-    test_string_to_morse();
-    printf("string_to_morse tests complete!\n");
+  test_string_to_morse();
+  printf("string_to_morse tests complete!\n");
 	test_morse_to_char();
 	printf("test_morse_to_char tests complete!\n");
 	test_morse_to_string();
