@@ -66,11 +66,9 @@ void assert_ctm(char input, char* output){
 }
 
 void assert_stm(char* input, char* output){
-    char* result;
-    //char* result = malloc(sizeof(char)*strlen(input)*8);
-    // fill with blanks in case of previous data
-//    strcpy(result, "");
-    result = string_to_morse(input);
+    char result[strlen(input) * 7];
+    strcpy(result, "");
+    string_to_morse(input, result);
     printf(FUNCTION_CALL_SFORMAT, "string_to_morse", input);
     assert_str_eq(result, output);
 }
@@ -82,8 +80,10 @@ void assert_mtc(char* input, char output){
 }
 
 void assert_mts(char* input, char* output){
-    char* result = morse_to_string(input);
-    printf(FUNCTION_CALL_SFORMAT, "morse_to_string", input);
+  char result[strlen(input) * 7]; 
+  strcpy(result, "");
+  morse_to_string(input, result);
+  printf(FUNCTION_CALL_SFORMAT, "morse_to_string", input);
 	assert_str_eq(result, output);
 }
 

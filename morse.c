@@ -38,72 +38,49 @@ static const char* MORSE_ERROR = "........";
 // ... it's used for performence!
 //
 // I do not copy ANY data. The pointer returned points to the above array!
-const char* char_to_morse(char letter){
-    const char* result_ptr = malloc(sizeof(char)*MAX_MORSE_LENGTH);
-    bool result_set = false;
-    for (int i = 0; i < NUM_OF_SYMBOLS; i++){
-       	if (letter == SYMBOLS[i]){
-	  result_ptr = MORSE[i];
-          result_set = true;
-		}
+const char* char_to_morse(char letter) {
+    for (int i = 0; i < NUM_OF_SYMBOLS; i++) {
+       	if (letter == SYMBOLS[i]) {
+          return MORSE[i];
+        }
     }
-    if (!result_set){
-        result_ptr = MORSE_ERROR;
-    }
-    return result_ptr;
+    return MORSE_ERROR;
 }
 
-char* string_to_morse(char* string){
-	int string_len = strlen(string);
+void string_to_morse(char* string, char* result){
+  int string_len = strlen(string);
 	// worse possible case is 8 times the length (assuming all numbers/punctuation, and adding spaces)
-    // +1 for NULL terminator
-    char* result = malloc(sizeof(char)*string_len*MAX_MORSE_LENGTH);
-    // sets everything to null in the string, just in case there was data there previously.
-    strcpy(result, "");
+  // +1 for NULL terminator
 	for (int i = 0; i < string_len; i++){
 		strcat(result, char_to_morse(string[i]));
         if (i != string_len-1){
             strcat(result, " ");
         }
 	}
-	return result;
 }
 
-const char morse_to_char(const char* morse){
-    bool found_symbol = false;
-    char result;
-	for (int i = 0; i < NUM_OF_SYMBOLS && !found_symbol; i++){
-		if (strcmp(morse, MORSE[i]) == 0){
-			result = SYMBOLS[i];
-            found_symbol = true;
+const char morse_to_char(const char* morse) {
+	for (int i = 0; i < NUM_OF_SYMBOLS; i++) {
+		if (strcmp(morse, MORSE[i]) == 0) {
+      return SYMBOLS[i];
 		}
 	}
-    if (!found_symbol){
-        result = SYMBOL_ERROR;
-    }
-    return result;
+  return SYMBOL_ERROR;
 }
 
-char* morse_to_string(const char* morse_to_cpy){
+void morse_to_string(const char* morse_to_cpy, char* result) {
 	int morse_length = strlen(morse_to_cpy)+1;
 	char morse[morse_length];
 	strcpy(morse, morse_to_cpy);
 
-    // allocate the amount of space the morse takes up for the text string
-    // this could be changed, but I don't see the point in optimizing the small things here.
-    char* result = malloc(sizeof(char)*strlen(morse));
-	// copy nothing to the string to avoid extra data
-	//strcpy(result, "");
-
 	// split by the space character
 	char* morse_ptr = strtok(morse, " \n");
 	// until we reach the end of the string
-	while (morse_ptr != NULL){
+	while (morse_ptr != NULL) {
 		char char_to_add = morse_to_char(morse_ptr);
 		// give the address of the single character to concatinate to result
 		strcat(result, &char_to_add);
 		// reset the morse ptr for the next section between a space
 		morse_ptr = strtok(NULL, " \n");
 	}
-	return result;
 }

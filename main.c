@@ -4,14 +4,18 @@
 #include <unistd.h>
 #include <string.h>
 
+#ifndef MAX_LINE_SIZE
+#define MAX_LINE_SIZE 4096
+#endif
+
 const long DEFAULT_DASH_PAUSE = 300000;
 const long DEFAULT_DOT_PAUSE = 150000;
 
 int main(int argc, char *argv[]){
-    char* inputString;
-    char* outputString;
-    // outputChar tracks the current printing character when slow printing is enabled
-    char outputChar;
+  char* input_string = malloc(sizeof(char) * MAX_LINE_SIZE);
+  char* output_string = malloc(sizeof(char) * MAX_LINE_SIZE);
+  // output_char tracks the current printing character when slow printing is enabled
+  char output_char;
 
 	long dash_delay = DEFAULT_DASH_PAUSE;
 	long dot_delay = DEFAULT_DOT_PAUSE;
@@ -44,52 +48,54 @@ int main(int argc, char *argv[]){
 
 	if (convertFromMorse){
 		// for every line in the input, until the end of file
-		while ((getline(&inputString, &buflen, stdin))!=EOF){
-            int stringLen = strlen(inputString);
+		while ((getline(&input_string, &buflen, stdin))!=EOF){
+            int stringLen = strlen(input_string);
 
             // This effectively strips the newline off the string
-            if (inputString[stringLen-1] == '\n'){
-                inputString[stringLen-1] = '\0';
+            if (input_string[stringLen-1] == '\n'){
+                input_string[stringLen-1] = '\0';
             }
             
-            outputString = morse_to_string(inputString);
-            printf("%s\n", outputString);
+            morse_to_string(input_string, output_string);
+            printf("%s\n", output_string);
 			// force-flush the input buffer just in case the user is in interactive mode
 			fflush(stdin);
 		}	
 	} else {
 		// for each line of input
-		while ((getline(&inputString, &buflen, stdin))!=EOF){
-            int stringLen = strlen(inputString);
+		while ((getline(&input_string, &buflen, stdin))!=EOF){
+            int stringLen = strlen(input_string);
 
             // This effectively strips the newline off the string
-            if (inputString[stringLen-1] == '\n'){
-                inputString[stringLen-1] = '\0';
+            if (input_string[stringLen-1] == '\n'){
+                input_string[stringLen-1] = '\0';
             }
 
-            outputString = string_to_morse(inputString);
+            string_to_morse(input_string, output_string);
 
             if (isSlow){
-                for (int i = 0; i < strlen(outputString); i++){
-                    outputChar = outputString[i];
-                    if (outputChar == '-'){
+                for (int i = 0; i < strlen(output_string); i++){
+                    output_char = output_string[i];
+                    if (output_char == '-'){
                         usleep(dash_delay);
-                        printf("%c", outputChar);
-                    } else if (outputChar == '.'){
+                        printf("%c", output_char);
+                    } else if (output_char == '.'){
                         usleep(dot_delay);
-                        printf("%c", outputChar); 
+                        printf("%c", output_char); 
                     } else {
-                        printf("%c", outputChar);
+                        printf("%c", output_char);
                     }
                     fflush(stdout);
                 }
                 printf("\n");
             } else {
-                printf("%s\n", outputString);
+                printf("%s\n", output_string);
                 // force flush the buffer incase user is in interactive mode
                 fflush(stdin);
             }
 		}
 	}
+  free(output_string);
+  free(input_string);
 	return 0;
 }
